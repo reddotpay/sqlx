@@ -875,7 +875,7 @@ func structOnlyError(t reflect.Type) error {
 	return fmt.Errorf("expected a struct, but struct %s has no exported fields", t.Name())
 }
 
-// scanAll scans all rows into a destination, which must be a slice of any
+// ScanAll scans all rows into a destination, which must be a slice of any
 // type.  If the destination slice type is a Struct, then StructScan will be
 // used on each row.  If the destination is some other kind of base type, then
 // each row must only have one column which can scan into that type.  This
@@ -890,6 +890,10 @@ func structOnlyError(t reflect.Type) error {
 // to `Get` and `Select`.  The reason that this has been implemented like this is
 // this is the only way to not duplicate reflect work in the new API while
 // maintaining backwards compatibility.
+func ScanAll(rows rowsi, dest interface{}, structOnly bool) error {
+	return scanAll(rows, dest, structOnly)
+}
+
 func scanAll(rows rowsi, dest interface{}, structOnly bool) error {
 	var v, vp reflect.Value
 
